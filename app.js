@@ -1,7 +1,7 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io').listen(http);
-var nicknames = [];
+var users = {};
 
 app.get("/", function (req, res) {
     res.send('hello world!');
@@ -17,11 +17,11 @@ io.on('connection', function (socket) {
     });
 
     socket.on('new user', function (nickname, callback) {
-        if (nicknames.indexOf(nickname) != -1) {
+        if (nickname in users) {
             callback(false);
         } else {
             socket.nickname = nickname;
-            nicknames.push(socket.nickname);
+            users[socket.nickname] = nickname;
             updateUsers();
             callback(true);
         }
@@ -30,12 +30,12 @@ io.on('connection', function (socket) {
     socket.on('disconnect', function (data) {
         if (!socket.nickname)
             return true;
-        nicknames.splice(nicknames.indexOf(socket.nickname), 1);
+        delete users[socket.nickname];
         updateUsers();
     });
 
     function updateUsers() {
-        io.emit('users', nicknames);
+        io.emit('users', Object.keys(users));
     }
 });
 

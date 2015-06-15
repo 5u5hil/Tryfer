@@ -17,7 +17,7 @@
         <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 
     </head>
-    <body ng-controller="chat">
+    <body ng-controller="chat" ng-cloak>
         <div class="off-canvas-wrap" data-offcanvas>
             <div class="inner-wrap">
                 <nav class="tab-bar">
@@ -26,7 +26,7 @@
                     </section>
 
                     <section class="middle tab-bar-section">
-                        <h1 class="title">Foundation</h1>
+                        <h1 class="title">Chat House</h1>
                     </section>
 
                     <section class="right-small">
@@ -45,21 +45,30 @@
                 <aside class="right-off-canvas-menu">
                     <ul class="off-canvas-list">
                         <li><label>Users</label></li>
-                        <li><a href="#">Hari Seldon</a></li>
-                        <li><a href="#">...</a></li>
+                        <li ng-repeat="user in users track by $index"><a href="#">{{user}}</a></li>
                     </ul>
                 </aside>
 
                 <section class="main-section">
                     <div class="row">
                         <div class="large-12 columns">
+                            <br />
                             <form class="nickForm" novalidate ng-submit="saveNickname()">
-                                <input id="n" placeholder="Choose A Nickname" autocomplete="off" ng-model="nickname" />
-                                <button>Register</button>
+                                <div class="row">
+                                    <div class="large-12 columns">
+                                        <div class="row">
+                                            <div class="small-10 columns">
+                                                <input type="text" id="n" placeholder="Choose A Nickname" autocomplete="off" ng-model="nickname" />
+                                            </div>
+                                            <div class="small-2 columns">
+                                                <button class="button postfix">Register</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
-                            <ul id="users">
-                                <li ng-repeat="user in users track by $index">{{user}}</li>
-                            </ul>
+
 
                             <ul id="messages">
                                 <li ng-repeat="msg in msgs track by $index"><strong>{{ msg.user}}:</strong> {{msg.msg}}</li>
@@ -73,7 +82,7 @@
                                                 <input type="text" id="m" placeholder="Enter A Message" autocomplete="off" ng-model="msg.text">
                                             </div>
                                             <div class="small-2 columns">
-                                                <a href="#" class="button postfix">send</a>
+                                                <button class="button postfix">send</button>
                                             </div>
                                         </div>
                                     </div>

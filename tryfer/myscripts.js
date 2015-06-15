@@ -3,7 +3,8 @@ $(document).foundation();
 var app = angular.module('tryfer', [])
 
 app.factory('socket', function () {
-    var socket = io('http://192.168.0.103:3000');
+    //var socket = io('http://192.168.0.103:3000');
+    var socket = io('http://192.168.2.170:3000');
     return socket;
 });
 
@@ -22,7 +23,8 @@ app.controller('chat', function ($scope, socket) {
             if (!data) {
                 alert('This Nickname is Already Taken')
             } else {
-
+                $(".nickForm").hide();
+                $(".msgForm").show();
             }
         });
         $scope.nickname = '';
@@ -34,7 +36,6 @@ app.controller('chat', function ($scope, socket) {
     });
 
     socket.on('users', function (nicknames) {
-        console.log(nicknames);
         $scope.users = nicknames;
         $scope.$digest();
     });
